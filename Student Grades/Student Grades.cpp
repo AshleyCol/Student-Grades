@@ -5,6 +5,7 @@
 using namespace std;
 
 const string studentDataFile = "student_data.txt";
+
 struct Student {
     string name;
     int studentID;
@@ -14,17 +15,20 @@ struct Student {
 };
 
 
-int readStudentData(int header[2]);
+int readStudentData(Student*& data, double header[2]);
+void calculateAverages(Student*& data, double header[2]);
 
 int main()
 {
-    int header[2] = {0,0};
+    double header[2] = {0,0};
     int validation = 1;
+    Student* studentData;
 
-    validation = readStudentData(header);
+    validation = readStudentData(studentData, header);
 
     if (validation == 0) {
-    
+        calculateAverages(studentData, header);
+        
     }
     else {
         return 1;
@@ -33,7 +37,7 @@ int main()
     return 0;
 }
 
-int readStudentData(int header[2]) {
+int readStudentData(Student*& data, double header[2]) {
     ifstream inFile(studentDataFile);
 
     if (!inFile) {
@@ -45,19 +49,35 @@ int readStudentData(int header[2]) {
     inFile >> header[0];
     inFile >> header[1];
 
-    while (inFile) {
-        static Student* data = new Student[header[0]];
+    if (header[0] <= 0 || header[1] <= 0) {
+        cout << "Invalid data in file!" << endl;
 
-        for (int i = 0; i < header[0]; i++) {
-            data[i].allScores = new double[header[1]];
-            inFile >> data[i].name;
-            inFile >> data[i].studentID;
+        return 1;
+    }
 
-            for (int x = 0; x < header[1]; x++) {
-                inFile >> data[i].allScores[x];
-            }
+    data = new Student[header[0]];
+
+    for (int i = 0; i < header[0]; i++) {
+        data[i].allScores = new double[header[1]];
+        inFile >> data[i].name;
+        inFile >> data[i].studentID;
+
+        for (int x = 0; x < header[1]; x++) {
+            inFile >> data[i].allScores[x];
         }
     }
+
     return 0;
 }
 
+void calculateAverages(Student*& data, double header[2]) {
+    for (int i = 0; i < header[0]; i++) {
+        double totalScore = 0;
+        
+        for (int x = 0; x < header[1]; x++) {
+            totalScore = totalScore + data[i].allScores[x];
+        }
+
+        data[i].average = totalScore / header[1];
+    }
+}

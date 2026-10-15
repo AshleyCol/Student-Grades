@@ -14,18 +14,17 @@ struct Student {
 };
 
 
-int readStudentData(Student data, int header[2]);
+int readStudentData(int header[2]);
 
 int main()
 {
-    Student studentData;
     int header[2] = {0,0};
     int validation = 1;
 
-    validation = readStudentData(studentData, header);
+    validation = readStudentData(header);
 
     if (validation == 0) {
-
+    
     }
     else {
         return 1;
@@ -34,7 +33,7 @@ int main()
     return 0;
 }
 
-int readStudentData(Student data, int header[2]) {
+int readStudentData(int header[2]) {
     ifstream inFile(studentDataFile);
 
     if (!inFile) {
@@ -43,9 +42,22 @@ int readStudentData(Student data, int header[2]) {
         return 1;
     }
 
+    inFile >> header[0];
+    inFile >> header[1];
 
+    while (inFile) {
+        static Student* data = new Student[header[0]];
 
+        for (int i = 0; i < header[0]; i++) {
+            data[i].allScores = new double[header[1]];
+            inFile >> data[i].name;
+            inFile >> data[i].studentID;
 
+            for (int x = 0; x < header[1]; x++) {
+                inFile >> data[i].allScores[x];
+            }
+        }
+    }
     return 0;
 }
 

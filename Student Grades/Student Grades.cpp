@@ -18,6 +18,7 @@ struct Student {
 int readStudentData(Student*& data, double header[2]);
 void calculateAverages(Student*& data, double header[2]);
 void calculateLetterGrades(Student*& data, double header[2]);
+void displayData(Student*& data, double header[2]);
 
 int main()
 {
@@ -30,7 +31,7 @@ int main()
     if (validation == 0) {
         calculateAverages(studentData, header);
         calculateLetterGrades(studentData, header);
-
+		displayData(studentData, header);
     }
     else {
         return 1;
@@ -102,4 +103,25 @@ void calculateLetterGrades(Student*& data, double header[2]) {
 			data[i].letterGrade = 'F';
 		}
 	}
+}
+
+void displayData(Student*& data, double header[2]) {
+    cout << setw(10) << "Names" << setw(14) << "Student ID";
+    for (int x = 1; x <= header[1]; x++) {
+		cout << setw(10) << "Score" << x;
+    }
+	cout << setw(14) << "Average" << setw(15) << "Letter Grade" << endl;
+
+    
+    for (int i = 0; i < header[0]; i++) {
+        cout << setw(10) << data[i].name;
+        cout << setw(14) << data[i].studentID;
+
+        for (int x = 0; x < header[1]; x++) {
+            cout << setw(11) << data[i].allScores[x];
+        }
+
+        cout << setw(14) << data[i].average << setw(15) << data[i].letterGrade << endl;
+    }
+
 }

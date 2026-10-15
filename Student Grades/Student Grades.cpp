@@ -17,6 +17,7 @@ struct Student {
 
 int readStudentData(Student*& data, double header[2]);
 void calculateAverages(Student*& data, double header[2]);
+void calculateLetterGrades(Student*& data, double header[2]);
 
 int main()
 {
@@ -28,7 +29,8 @@ int main()
 
     if (validation == 0) {
         calculateAverages(studentData, header);
-        
+        calculateLetterGrades(studentData, header);
+
     }
     else {
         return 1;
@@ -80,4 +82,24 @@ void calculateAverages(Student*& data, double header[2]) {
 
         data[i].average = totalScore / header[1];
     }
+}
+
+void calculateLetterGrades(Student*& data, double header[2]) {
+	for (int i = 0; i < header[0]; i++) {
+		if (data[i].average >= 90) {
+			data[i].letterGrade = 'A';
+		}
+		else if (data[i].average >= 80) {
+			data[i].letterGrade = 'B';
+		}
+		else if (data[i].average >= 70) {
+			data[i].letterGrade = 'C';
+		}
+		else if (data[i].average >= 64) {
+			data[i].letterGrade = 'D';
+		}
+		else {
+			data[i].letterGrade = 'F';
+		}
+	}
 }

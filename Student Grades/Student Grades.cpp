@@ -19,6 +19,7 @@ int readStudentData(Student*& data, double header[2]);
 void calculateAverages(Student*& data, double header[2]);
 void calculateLetterGrades(Student*& data, double header[2]);
 void displayData(Student*& data, double header[2]);
+void releaseMemory(Student*& data, double header[2]);
 
 int main()
 {
@@ -124,4 +125,11 @@ void displayData(Student*& data, double header[2]) {
         cout << setw(14) << data[i].average << setw(15) << data[i].letterGrade << endl;
     }
 
+}
+
+void releaseMemory(Student*& data, double header[2]) {
+	for (int i = 0; i < header[0]; i++) {
+		delete[] data[i].allScores;
+	}
+	delete[] data;
 }
